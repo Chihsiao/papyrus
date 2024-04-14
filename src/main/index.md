@@ -17,24 +17,39 @@ lstPrefix: 项
 ---
 
 @@[[
-    new_page = [=[```{=openxml}
-<w:p><w:r><w:br w:type="page"/></w:r></w:p>
-```]=]
+    function from_fence(input)
+        local output = {}
+        local capturing = false
+        local extracted_value = nil
+
+        for line in input:gmatch("([^\n]*)\n?") do
+            if not capturing then
+                local matched = line:match("^```(%w+)$")
+                if matched then
+                    extracted_value = matched
+                    capturing = true
+                end
+            else
+                if line:find("^```$", 1, true) then
+                    break
+                end
+                table.insert(output, line)
+            end
+        end
+
+        return table.concat(output, "\n"), extracted_value
+    end
 ]]
 
 @@[[
+    new_page = [=[```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```]=]
+
     function custom_style(style, content)
         return [=[::: {custom-style="]=]..style..[=["}]=]..
             "\n| "..content.."\n"..
             [=[:::]=]
-    end
-
-    function indentless(content)
-        return custom_style("Indentless", content)
-    end
-
-    function centered(content)
-        return custom_style("Centered", content)
     end
 ]]
 
