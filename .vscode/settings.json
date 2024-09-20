@@ -1,0 +1,15 @@
+{
+  "papyrus.conf": "main",
+  "triggerTaskOnSave.on": true,
+  "triggerTaskOnSave.selectedTask": "Compile bundle",
+  "triggerTaskOnSave.tasks": {
+    "build": ["src/**/*", "*.papyrus"]
+  },
+  "files.exclude": {
+    ".git": true,
+    ".vscode": true,
+    ".gitignore": true,
+    "shell.nix": true,
+    "nix": true
+  }
+}

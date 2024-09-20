@@ -1,0 +1,24 @@
+#!/usr/bin/env papyrus.sh
+# shellcheck shell=bash
+
+PAPYRUS_YPP_FLAGS+=(-t png)
+
+PAPYRUS_PANDOC_REFERENCE_FILE='reference.docx'
+if [ ! -e "$PAPYRUS_PANDOC_REFERENCE_FILE" ]; then
+    "${PANDOC:-pandoc}" --print-default-data-file reference.docx \
+        > "$PAPYRUS_PANDOC_REFERENCE_FILE"
+fi
+
+PAPYRUS_PANDOC_FLAGS+=(
+    --filter pandoc-crossref
+    --reference-doc reference.docx
+)
+
+PAPYRUS_TARGET_BUNDLE_NAME="$(
+    basename "$PAPYRUS_CONF" .papyrus).docx"
+
+function xdg-open() {
+    wps "$(value_of bundle_file)" & waitpid $!
+}
+
+export PAPYRUS_TARGET_BUNDLE_NAME
