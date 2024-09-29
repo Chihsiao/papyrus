@@ -6,6 +6,7 @@
     "build": ["src/**/*", "*.papyrus"]
   },
   "files.exclude": {
+    "lib": true,
     ".git": true,
     ".vscode": true,
     ".gitignore": true,

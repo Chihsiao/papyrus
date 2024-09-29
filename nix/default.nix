@@ -7,4 +7,5 @@ in
 
 {
   ypp = pkgs.callPackage ./ypp.nix {};
+  papyrus = pkgs.callPackage ./papyrus.nix {};
 }
