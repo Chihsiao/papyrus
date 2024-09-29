@@ -11,6 +11,7 @@
     ".vscode": true,
     ".gitignore": true,
     "shell.nix": true,
+    "start.sh": true,
     "nix": true
   }
 }
