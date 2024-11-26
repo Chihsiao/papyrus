@@ -15,7 +15,7 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
     mkdir -p "$out/bin"
-    install papyrus.sh "$out/bin/ypp"
+    install papyrus.sh "$out/bin/papyrus.sh"
     runHook postInstall
   '';
 }
