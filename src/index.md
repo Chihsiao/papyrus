@@ -3,6 +3,7 @@ title: '这里是标题'
 author: '这里是作者'
 
 subfigGrid: true
+linkReferences: true
 codeBlockCaptions: true
 
 figureTitle: 图
