@@ -13,7 +13,8 @@
         "panel": "dedicated",
         "reveal": "silent",
         "clear": true
-      }
+      },
+      "problemMatcher": []
     },
     {
       "type": "shell",
@@ -45,7 +46,8 @@
         "panel": "dedicated",
         "reveal": "silent",
         "clear": true
-      }
+      },
+      "problemMatcher": []
     }
   ]
 }
