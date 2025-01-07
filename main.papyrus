@@ -11,7 +11,7 @@ fi
 
 PAPYRUS_PANDOC_FLAGS+=(
     --filter pandoc-crossref
-    --reference-doc reference.docx
+    --reference-doc "$PAPYRUS_PANDOC_REFERENCE_FILE"
 )
 
 PAPYRUS_TARGET_BUNDLE_NAME="$(
