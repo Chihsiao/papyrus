@@ -11,7 +11,7 @@ PAPYRUS_TARGET_PREPROCESSED_NAME="$PAPYRUS_BASENAME/preprocessed.md"
 
 #region enable --reference-doc
 : "${PAPYRUS_SRC_REFDOC_NAME:=reference.docx}"
-refdoc_file="$(absolute_path_of "$PAPYRUS_SRC/$PAPYRUS_SRC_REFDOC_NAME")"
+refdoc_file="$PAPYRUS_SRC/$PAPYRUS_SRC_REFDOC_NAME"
 [ -e "$refdoc_file" ] || "${PANDOC:-pandoc}" --print-default-data-file reference.docx > "$refdoc_file"
 PAPYRUS_PANDOC_FLAGS+=(--reference-doc "$refdoc_file")
 #endregion
