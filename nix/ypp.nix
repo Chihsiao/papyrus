@@ -5,14 +5,14 @@
 }:
 
 let
-  url = "https://cdelord.fr/pub/luax-ssl-linux-x86_64.tar.xz";
-  hash = "sha256-DSTgoL12v8Rox/cTz1ksUNp6I5JWQTg3KV8mWU6kPIY=";
-  lastUpdate = "2024-12-14";
+  url = "https://github.com/CDSoft/ypp/releases/download/1.5/ypp-1.5-linux-x86_64.tar.gz";
+  hash = "sha256-PeDFOXjQh++oqClcnoCFvla7sAjiPomwm0h2DKkOkIk=";
+  version = "1.5";
 in
 
 stdenv.mkDerivation {
   pname = "ypp";
-  version = lastUpdate;
+  inherit version;
   src = fetchzip { inherit url hash; stripRoot = false; };
 
   nativeBuildInputs = [
@@ -22,7 +22,7 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
     mkdir -p "$out/bin"
-    install bin/ypp "$out/bin/ypp"
+    install */bin/ypp "$out/bin/ypp"
     runHook postInstall
   '';
 }
