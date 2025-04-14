@@ -30,7 +30,7 @@ lstPrefix: 项
                     capturing = true
                 end
             else
-                if line:find("^```$", 1, true) then
+                if line:match("^```$") then
                     break
                 end
                 table.insert(output, line)
