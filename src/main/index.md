@@ -16,6 +16,7 @@ listingTitle: 项
 lstPrefix: 项
 ---
 
+<!--
 @@[[
     function from_fence(input)
         local output = {}
@@ -40,8 +41,12 @@ lstPrefix: 项
         return table.concat(output, "\n"), extracted_value
     end
 ]]
+-->
 
-@@[[
+<!--
+@@[[load(from_fence([==[
+-->
+```lua
     new_page = [=[```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```]=]
@@ -51,12 +56,21 @@ lstPrefix: 项
             "\n| "..content.."\n"..
             [=[:::]=]
     end
-]]
+```
+<!--
+]==]))()]]
+-->
 
-@@[[
+<!--
+@@[[load(from_fence([=[
+-->
+```lua
     function cite(key)
         return "@" .. key
     end
-]]
+```
+<!--
+]=]))()]]
+-->
 
 @include "org.md"
