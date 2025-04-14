@@ -80,7 +80,7 @@ function compile_bundle() {
 }
 
 function open_bundle() {
-    xdg-open "$bundle_file"
+    setsid xdg-open "$bundle_file"
 }
 
 function clean() {

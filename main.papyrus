@@ -16,10 +16,6 @@ refdoc_file="$PAPYRUS_SRC/$PAPYRUS_SRC_REFDOC_NAME"
 PAPYRUS_PANDOC_FLAGS+=(--reference-doc "$refdoc_file")
 #endregion
 
-function xdg-open() {
-    wps "$(value_of bundle_file)" & waitpid $!
-}
-
 export \
     PAPYRUS_SRC \
     PAPYRUS_TARGET_BUNDLE_NAME \
