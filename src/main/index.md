@@ -65,7 +65,7 @@ lstPrefix: 项
 @@[[load(from_fence([=[
 -->
 ```lua
-    function cite(key)
+    function ref(key)
         return "@" .. key
     end
 ```
