@@ -8,11 +8,6 @@ function absolute_path_of() {
     if [ "${filename:0:1}" = '/' ]; then printf '%s\n' "$filename";
         else realpath -mL -- "${2:-$PAPYRUS_ROOT}/$filename"; fi
 }
-
-function value_of() {
-    local variable_name="${1:?no variable name}"
-    printf '%s\n' "${!variable_name}"
-}
 #endregion
 
 #region variables
@@ -23,19 +18,13 @@ if ! [ -v PAPYRUS_CONF ]; then
     shift
 fi
 
-[ "${PAPYRUS_CONF:0:1}" = '/' ] || \
-    PAPYRUS_CONF="$(realpath -mL -- "$PAPYRUS_CONF")"
-
+PAPYRUS_CONF="$(realpath -mL -- "$PAPYRUS_CONF")"
 readonly PAPYRUS_CONF
 ##endregion
 
 ##region PAPYRUS_ROOT
-[ -v PAPYRUS_ROOT ] || \
-    PAPYRUS_ROOT="$(dirname "$PAPYRUS_CONF")"
-
-[ "${PAPYRUS_ROOT:0:1}" = '/' ] || \
-    PAPYRUS_ROOT="$(realpath -mL -- "$PAPYRUS_ROOT")"
-
+: "${PAPYRUS_ROOT:=$(dirname "$PAPYRUS_CONF")}"
+PAPYRUS_ROOT="$(realpath -mL -- "$PAPYRUS_ROOT")"
 readonly PAPYRUS_ROOT
 ##endregion
 
@@ -53,9 +42,6 @@ PAPYRUS_PANDOC_FLAGS=()
 
 # shellcheck source=/dev/null
 source "$PAPYRUS_CONF"
-
-[ "${PAPYRUS_CONF:0:1}" = '/' ] && \
-    [ "${PAPYRUS_ROOT:0:1}" = '/' ]
 
 #region operations
 src_dir="$(absolute_path_of "$PAPYRUS_SRC")"
