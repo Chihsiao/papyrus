@@ -3,7 +3,6 @@
 
 PAPYRUS_YPP_FLAGS+=(-t png)
 
-import_module metadata
-import_module docx-format
-import_module reference-doc
-import_module pandoc-crossref
+import_module pandoc_crossref
+import_module office_word
+use_refdoc

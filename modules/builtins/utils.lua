@@ -1,6 +1,8 @@
 ---@diagnostic disable: lowercase-global
 
----Get content and type of fence
+local F = require 'F'
+
+---Extract content and type from code fence
 ---@param input string
 ---@return string
 ---@return string | nil
@@ -26,3 +28,16 @@ function from_fence(input)
 
     return table.concat(output, '\n'), extracted_value
 end
+
+---Apply paragraph with custom style
+---@param style string
+---@param para string
+---@return string
+local function use_custom_style(style, para)
+    return '::: {custom-style="'..style..'"}\n'..
+---@diagnostic disable-next-line: undefined-global
+           '| '..ypp(content)..'\n'..
+           ':::'
+end
+
+custom_style = F.curry(use_custom_style)
