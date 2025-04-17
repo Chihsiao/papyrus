@@ -70,22 +70,13 @@ function absolute_path_of() {
     if [ "${filename:0:1}" = '/' ]; then printf '%s\n' "$filename";
         else realpath -mL -- "${2:-$PAPYRUS_ROOT}/$filename"; fi
 }
-
-function path_resolve() {
-    src_dir="$(absolute_path_of "$PAPYRUS_SRC/$PAPYRUS_BASENAME")"
-    index_md_file="$src_dir/$PAPYRUS_SRC_INDEX_NAME"
-
-    target_dir="$(absolute_path_of "$PAPYRUS_TARGET")"
-    bundle_file="$target_dir/$PAPYRUS_BASENAME.$PAPYRUS_TARGET_BUNDLE_FORMAT"
-    preprocessed_md_file="$target_dir/$PAPYRUS_BASENAME/$PAPYRUS_TARGET_PREPROCESSED_NAME"
-}
-
-path_resolve
 #endregion
 
 PAPYRUS_YPP_FLAGS=()
 PAPYRUS_PANDOC_FLAGS=()
-PAPYRUS_INITIALIZERS=()
+PAPYRUS_INITIALIZERS=(
+    path_resolve
+)
 
 #region modules
 use_default PAPYRUS_MODULES:=modules
@@ -134,6 +125,15 @@ import_module builtins
 
 # shellcheck source=/dev/null
 source "$PAPYRUS_CONF"
+
+function path_resolve() {
+    src_dir="$(absolute_path_of "$PAPYRUS_SRC/$PAPYRUS_BASENAME")"
+    index_md_file="$src_dir/$PAPYRUS_SRC_INDEX_NAME"
+
+    target_dir="$(absolute_path_of "$PAPYRUS_TARGET")"
+    bundle_file="$target_dir/$PAPYRUS_BASENAME.$PAPYRUS_TARGET_BUNDLE_FORMAT"
+    preprocessed_md_file="$target_dir/$PAPYRUS_BASENAME/$PAPYRUS_TARGET_PREPROCESSED_NAME"
+}
 
 function init() {
     local initializer
