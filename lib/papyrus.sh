@@ -2,6 +2,41 @@
 
 set -euo pipefail
 
+function use_default() {
+    for assignment in "$@"; do
+        local var def_val var_set_empty=
+
+        var="${assignment%%=*}"
+        def_val="${assignment#*=}"
+
+        if [[ "${var:(-1):1}" = ':' ]]; then
+            var="${var::(-1)}"
+            var_set_empty=1
+        fi
+
+        local var_def="$var"_def
+
+        # assert
+        # || $var is unset
+        # || $var is set and default
+        # || $var is set and non-default and non-empty
+        # || $var is set and non-default and empty and to-set-when-empty
+
+        [[ ! -v "$var" \
+        || ( -v "$var_def" && "${!var}" = "${!var_def}" ) \
+        || -n "${!var}" || -n "$var_set_empty" \
+        ]] || continue
+
+        # assert
+        # || $def_val is non-empty
+        # || $def_val is empty and emptiable
+        [[ -n "$def_val" || -n "${def_val_emptiable-1}" ]] || continue
+
+        export -- "$var_def=$def_val"
+        export -- "$var=$def_val"
+    done
+}
+
 #region paths
 ##region PAPYRUS_CONF
 if ! [ -v PAPYRUS_CONF ]; then
@@ -19,14 +54,16 @@ PAPYRUS_ROOT="$(realpath -mL -- "$PAPYRUS_ROOT")"
 readonly PAPYRUS_ROOT
 ##endregion
 
-: "${PAPYRUS_BASENAME:=$(basename "$PAPYRUS_CONF" .papyrus)}"
-
-: "${PAPYRUS_SRC:=src}"
-: "${PAPYRUS_SRC_INDEX_NAME:=index.md}"
-
-: "${PAPYRUS_TARGET:=target}"
-: "${PAPYRUS_TARGET_BUNDLE_FORMAT:=docx}"
-: "${PAPYRUS_TARGET_PREPROCESSED_NAME:=preprocessed.md}"
+use_default \
+    PAPYRUS_BASENAME:="$(basename "$PAPYRUS_CONF" .papyrus)" \
+    \
+    PAPYRUS_SRC:=src \
+    PAPYRUS_SRC_INDEX_NAME=index.md \
+    \
+    PAPYRUS_TARGET:=target \
+    PAPYRUS_TARGET_BUNDLE_FORMAT:=docx \
+    PAPYRUS_TARGET_PREPROCESSED_NAME:=preprocessed.md \
+    ;
 
 function absolute_path_of() {
     local filename="${1:?no filename}"
@@ -50,7 +87,7 @@ PAPYRUS_YPP_FLAGS=()
 PAPYRUS_PANDOC_FLAGS=()
 
 #region modules
-: "${PAPYRUS_MODULES:=modules}"
+use_default PAPYRUS_MODULES:=modules
 
 function import_module() {
     local __MODULE_NAME__ \
