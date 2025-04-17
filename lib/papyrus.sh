@@ -21,12 +21,12 @@ readonly PAPYRUS_ROOT
 
 : "${PAPYRUS_BASENAME:=$(basename "$PAPYRUS_CONF" .papyrus)}"
 
-: "${PAPYRUS_SRC:=src/$PAPYRUS_BASENAME}"
+: "${PAPYRUS_SRC:=src}"
 : "${PAPYRUS_SRC_INDEX_NAME:=index.md}"
 
 : "${PAPYRUS_TARGET:=target}"
-: "${PAPYRUS_TARGET_BUNDLE_NAME:=$PAPYRUS_BASENAME.docx}"
-: "${PAPYRUS_TARGET_PREPROCESSED_NAME:=$PAPYRUS_BASENAME/preprocessed.md}"
+: "${PAPYRUS_TARGET_BUNDLE_FORMAT:=docx}"
+: "${PAPYRUS_TARGET_PREPROCESSED_NAME:=preprocessed.md}"
 
 function absolute_path_of() {
     local filename="${1:?no filename}"
@@ -35,12 +35,12 @@ function absolute_path_of() {
 }
 
 function path_resolve() {
-    src_dir="$(absolute_path_of "$PAPYRUS_SRC")"
+    src_dir="$(absolute_path_of "$PAPYRUS_SRC/$PAPYRUS_BASENAME")"
     index_md_file="$src_dir/$PAPYRUS_SRC_INDEX_NAME"
 
     target_dir="$(absolute_path_of "$PAPYRUS_TARGET")"
-    bundle_file="$target_dir/$PAPYRUS_TARGET_BUNDLE_NAME"
-    preprocessed_md_file="$target_dir/$PAPYRUS_TARGET_PREPROCESSED_NAME"
+    bundle_file="$target_dir/$PAPYRUS_BASENAME.$PAPYRUS_TARGET_BUNDLE_FORMAT"
+    preprocessed_md_file="$target_dir/$PAPYRUS_BASENAME/$PAPYRUS_TARGET_PREPROCESSED_NAME"
 }
 
 path_resolve
