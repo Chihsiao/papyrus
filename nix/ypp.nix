@@ -5,9 +5,9 @@
 }:
 
 let
-  url = "https://github.com/CDSoft/ypp/releases/download/1.5/ypp-1.5-linux-x86_64.tar.gz";
-  hash = "sha256-PeDFOXjQh++oqClcnoCFvla7sAjiPomwm0h2DKkOkIk=";
-  version = "1.5";
+  url = "https://github.com/CDSoft/ypp/releases/download/1.7.3/ypp-1.7.3-linux-x86_64.tar.gz";
+  hash = "sha256-HCPGmfcKpyqcE5B1ExrQkcX7J1S+eNKwy23XnuYOr/0=";
+  version = "1.7.3";
 in
 
 stdenv.mkDerivation {
