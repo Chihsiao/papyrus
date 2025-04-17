@@ -96,12 +96,17 @@ function import_module() {
 
     for __MODULE_NAME__ in "$@"
     do
+        local k="__MODULE_IMPORTED_${__MODULE_NAME__}__"
+        # assert module is not imported
+        [[ ! -v "$k" ]] || continue
+
         __MODULE_ROOT__="$PAPYRUS_MODULES/$__MODULE_NAME__"
         __FILE__="$__MODULE_ROOT__/index.inc.sh"
         if [ -f "$__FILE__" ]
         then
             # shellcheck source=/dev/null
             source "$__FILE__"
+            export -- "$k"=1
             continue
         fi
 
@@ -109,6 +114,7 @@ function import_module() {
         if [ -f "$__FILE__" ]
         then
             PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
+            export -- "$k"=1
             continue
         fi
 
@@ -116,6 +122,7 @@ function import_module() {
         if [ -f "$__FILE__" ]
         then
             PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
+            export -- "$k"=1
             continue
         fi
     done
