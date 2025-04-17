@@ -102,21 +102,21 @@ function import_module() {
         then
             # shellcheck source=/dev/null
             source "$__FILE__"
-            return
+            continue
         fi
 
         __FILE__="$__MODULE_ROOT__/index.lua"
         if [ -f "$__FILE__" ]
         then
             PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
-            return
+            continue
         fi
 
         __FILE__="$__MODULE_ROOT__.lua"
         if [ -f "$__FILE__" ]
         then
             PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
-            return
+            continue
         fi
     done
 }
