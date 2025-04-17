@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+
+set -euo pipefail \
+    ${DEBUG:+-x}
+
+: "${MMDC_CONFIG=}"
+: "${MMDC_CSS="
+#container > svg {
+    max-width: 100% !important;
+}
+"}"
+
+#region functions
+function get_ext_of() {
+    [[ "$1" != *.* ]] || printf '%s\n' "${1##*.}"
+}
+
+function use_default() {
+    for assignment in "$@"; do
+        local var def_val var_set_empty=
+
+        var="${assignment%%=*}"
+        def_val="${assignment#*=}"
+
+        if [[ "${var:(-1):1}" = ':' ]]; then
+            var="${var::(-1)}"
+            var_set_empty=1
+        fi
+
+        local var_def="$var"_def
+
+        # assert
+        # || $var is unset
+        # || $var is set and default
+        # || $var is set and non-default and non-empty
+        # || $var is set and non-default and empty and to-set-when-empty
+
+        [[ ! -v "$var" \
+        || ( -v "$var_def" && "${!var}" = "${!var_def}" ) \
+        || -n "${!var}" || -n "$var_set_empty" \
+        ]] || continue
+
+        # assert
+        # || $def_val is non-empty
+        # || $def_val is empty and emptiable
+        [[ -n "$def_val" || -n "${def_val_emptiable-1}" ]] || continue
+
+        export -- "$var_def=$def_val"
+        export -- "$var=$def_val"
+    done
+}
+
+function parse_arguments() {
+    unset opt_input opt_background opt_format opt_output \
+          opt_height opt_width opt_theme \
+          ;
+
+    eval set -- "$(getopt --quiet \
+        -l 'input:,backgroundColor:,outputFormat:,output:,height:,width:,theme:' \
+        -o 'i:b:e:o:H:w:t:' -- \
+        "$@" || true)"
+
+    while true; do
+        case "$1" in
+            -i|--input) opt_input="$2"; shift 2;;
+            -b|--backgroundColor) opt_background="$2" shift 2;;
+            -e|--outputFormat) opt_format="$2"; shift 2;;
+            -o|--output) opt_output="$2"; shift 2;;
+            -H|--height) opt_height="$2"; shift 2;;
+            -w|--width) opt_width="$2"; shift 2;;
+            -t|--theme) opt_theme="$2"; shift 2;;
+            --) shift; break;;
+        esac
+    done
+
+    : "${opt_input:?no input}"
+
+    : "${opt_format:=$(get_ext_of "${opt_output-}")}"
+    : "${opt_format:=svg}"
+
+    : "${opt_output=$(
+            [[ "$opt_input" != '-' ]] \
+                && printf '%s\n' "$opt_input" || echo out
+        ).$opt_format}"
+
+    def_val_emptiable='' use_default \
+        opt_width="${MMDC_DEFAULT_WIDTH-}" \
+        opt_height="${MMDC_DEFAULT_HEIGHT-}" \
+        opt_background="${MMDC_DEFAULT_BACKGROUND-}" \
+        opt_theme="${MMDC_DEFAULT_THEME-}" \
+        ;
+}
+
+function run_mmdc() {
+    PATH="$MMDC_SEARCH_PATH" command mmdc \
+        ${MMDC_CSS:+--cssFile=<(printf '%s\n' "$MMDC_CSS")} \
+        ${MMDC_CONFIG:+--configFile=<(printf '%s\n' "$MMDC_CONFIG")} "$@" \
+        ${opt_height_def:+--height="$opt_height"} ${opt_width_def:+--width="$opt_width"} \
+        ${opt_background_def:+--backgroundColor="$opt_background"} \
+        --outputFormat="$opt_format" --output="$opt_output" \
+        ${opt_theme_def:+--theme="$opt_theme"} \
+        ;
+}
+
+function run_mmdc_with_trim() {
+    if [[ "${opt_format,,}" =~ ^(svg|pdf)$ ]]; then
+        # skip trimming for svg and pdf format
+        "${run_mmdc_for_trim:-run_mmdc}" "$@"
+        return
+    fi
+
+    opt_output=- "${run_mmdc_for_trim:-run_mmdc}" "$@" \
+        | "${MAGICK:-magick}" -- - -trim "$opt_output"
+}
+
+function run_mmdc_with_resize() {
+    local geometry="${opt_width:-}x${opt_height:-}"
+    if [[ "${opt_format,,}" =~ ^(svg|pdf)$ || "${geometry}" = 'x' ]]; then
+        # skip resizing for svg and pdf format or when no geometry provided
+        "${run_mmdc_for_resize:-run_mmdc}" "$@"
+        return
+    fi
+
+    opt_output=- "${run_mmdc_for_resize:-run_mmdc}" "$@" \
+        | "${MAGICK:-magick}" -- - -resize "$geometry" "$opt_output"
+}
+
+function run_mmdc_with_trim_with_resize() {
+    run_mmdc_for_resize="run_mmdc_with_trim" run_mmdc_with_resize "$@"
+}
+#endregion
+
+parse_arguments "$@"
+
+run_mmdc\
+${MMDC_TRIM:+_with_trim}\
+${MMDC_RESIZE:+_with_resize} "$@"
