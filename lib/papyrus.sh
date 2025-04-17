@@ -85,6 +85,7 @@ path_resolve
 
 PAPYRUS_YPP_FLAGS=()
 PAPYRUS_PANDOC_FLAGS=()
+PAPYRUS_INITIALIZERS=()
 
 #region modules
 use_default PAPYRUS_MODULES:=modules
@@ -133,6 +134,15 @@ import_module builtins
 
 # shellcheck source=/dev/null
 source "$PAPYRUS_CONF"
+
+function init() {
+    local initializer
+    for initializer in "${PAPYRUS_INITIALIZERS[@]}"; do
+        "$initializer"
+    done
+}
+
+init
 
 #region operations
 function preprocess() {
