@@ -23,7 +23,9 @@ metadata = setmetatable({}, {
 local function write_metadata()
 ---@diagnostic disable-next-line: undefined-global
     local metadata_file = ypp.output_file()..'.json'
-    fs.write(metadata_file, json.encode(metadata, {indent=true})..'\n')
+    local content = json.encode(metadata, {indent=true})..'\n'
+    fs.mkdirs(fs.dirname(metadata_file))
+    fs.write(metadata_file, content)
 end
 
 ---@diagnostic disable-next-line: undefined-global
