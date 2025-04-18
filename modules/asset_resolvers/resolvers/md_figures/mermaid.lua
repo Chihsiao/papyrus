@@ -1,11 +1,15 @@
 local fs = require 'fs'
 
 md_figure_resolvers['mermaid'] =
-    function (title, src, content, ...)
-        local filename = fs.basename(src)
-        local basename = filename:sub(1, ((filename:find('%.') or 0) - 1))
+    function (title, _, content, attrs)
+        local attributes = Attributes.parse(attrs)
+        local opts = {}
+
+        if attributes.id ~= nil then
+            opts.name = attributes.id:gsub(':', '-')
+        end
 
 ---@diagnostic disable-next-line: undefined-global
-        local target = image.mmdc({name = basename})(content)
-        return '!['..title..']('..target..')'..(...)
+        local output_file = image.mmdc(opts)(content)
+        return '!['..title..']('..output_file..')'..attrs
     end
