@@ -7,3 +7,5 @@ new_page = [[```{=openxml}
 new_section = [[```{=openxml}
 <w:p><w:pPr><w:sectPr></w:sectPr></w:pPr></w:p>
 ```]]
+
+new_line = [[`<w:r><w:br w:type="textWrapping"/></w:r>`{=openxml}]]
