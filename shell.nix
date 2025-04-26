@@ -12,7 +12,7 @@ in
 
 pkgs.mkShellNoCC rec {
   packages = (with pkgs; [ mermaid-cli
-    pandoc haskellPackages.pandoc-crossref
+    pandoc_3_6 haskellPackages.pandoc-crossref
   ]) ++ (with utils; [
     papyrus
     ypp
