@@ -78,6 +78,8 @@ PAPYRUS_INITIALIZERS=(
     path_resolve
 )
 
+PAPYRUS_POSTPROCESSORS=()
+
 #region modules
 use_default PAPYRUS_MODULES:=modules
 
@@ -151,12 +153,20 @@ function preprocess() {
         "$index_md_file"
 }
 
+function postprocess() {
+    local postprocessor
+    for postprocessor in "${PAPYRUS_POSTPROCESSORS[@]}"; do
+        "$postprocessor"
+    done
+}
+
 function compile_bundle() {
     [ "${1:-}" = 'dont_preprocess' ] || preprocess
     "${PANDOC:-pandoc}" --embed-resources --standalone --output="$bundle_file" \
         --from=markdown --resource-path="$src_dir" \
         "${PAPYRUS_PANDOC_FLAGS[@]}" -- \
         "$preprocessed_md_file"
+    postprocess
 }
 
 function open_bundle() {
