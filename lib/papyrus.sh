@@ -124,6 +124,9 @@ function import_module() {
                 continue 2
             fi
         done
+
+        echo "Cannot find module '$__MODULE_NAME__'" >&2
+        return 1
     done
 }
 
