@@ -88,37 +88,42 @@ function import_module() {
           __MODULE_ROOT__ \
           __FILE__
 
+    local modules_dirs modules_dir
+    IFS=: read -ra modules_dirs <<< "$PAPYRUS_MODULES"
+
     for __MODULE_NAME__ in "$@"
     do
         local k="__MODULE_IMPORTED_${__MODULE_NAME__}__"
         # assert module is not imported
         [[ ! -v "$k" ]] || continue
 
-        __MODULE_ROOT__="$PAPYRUS_MODULES/$__MODULE_NAME__"
-        __FILE__="$__MODULE_ROOT__/index.inc.sh"
-        if [ -f "$__FILE__" ]
-        then
-            # shellcheck source=/dev/null
-            source "$__FILE__"
-            export -- "$k"=1
-            continue
-        fi
+        for modules_dir in "${modules_dirs[@]}"; do
+            __MODULE_ROOT__="$modules_dir/$__MODULE_NAME__"
+            __FILE__="$__MODULE_ROOT__/index.inc.sh"
+            if [ -f "$__FILE__" ]
+            then
+                # shellcheck source=/dev/null
+                source "$__FILE__"
+                export -- "$k"=1
+                continue 2
+            fi
 
-        __FILE__="$__MODULE_ROOT__/index.lua"
-        if [ -f "$__FILE__" ]
-        then
-            PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
-            export -- "$k"=1
-            continue
-        fi
+            __FILE__="$__MODULE_ROOT__/index.lua"
+            if [ -f "$__FILE__" ]
+            then
+                PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
+                export -- "$k"=1
+                continue 2
+            fi
 
-        __FILE__="$__MODULE_ROOT__.lua"
-        if [ -f "$__FILE__" ]
-        then
-            PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
-            export -- "$k"=1
-            continue
-        fi
+            __FILE__="$__MODULE_ROOT__.lua"
+            if [ -f "$__FILE__" ]
+            then
+                PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
+                export -- "$k"=1
+                continue 2
+            fi
+        done
     done
 }
 
