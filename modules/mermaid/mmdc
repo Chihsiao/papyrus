@@ -32,12 +32,11 @@ function use_default() {
         # assert
         # || $var is unset
         # || $var is set and default
-        # || $var is set and non-default and non-empty
         # || $var is set and non-default and empty and to-set-when-empty
 
         [[ ! -v "$var" \
         || ( -v "$var_def" && "${!var}" = "${!var_def}" ) \
-        || -n "${!var}" || -n "$var_set_empty" \
+        || ( -z "${!var}" && -n "$var_set_empty" ) \
         ]] || continue
 
         # assert
