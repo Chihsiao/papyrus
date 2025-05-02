@@ -1,0 +1,16 @@
+{
+  "papyrus.conf": "main",
+  "triggerTaskOnSave.on": true,
+  "triggerTaskOnSave.selectedTask": "Compile bundle",
+  "triggerTaskOnSave.tasks": {
+    "build": ["src/**/*", "*.papyrus"],
+  },
+  "files.exclude": {
+    ".git/": true,
+    ".direnv/": true,
+    ".vscode/": true,
+    ".gitignore": true,
+    "flake.lock": true,
+    ".envrc": true
+  },
+}

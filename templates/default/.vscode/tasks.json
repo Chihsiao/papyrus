@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "Clean all",
+      "command": "papyrus.sh",
+      "args": [
+        "${config:papyrus.conf}.papyrus",
+        "clean"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "silent",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "label": "Compile bundle",
+      "command": "papyrus.sh",
+      "args": [
+        "${config:papyrus.conf}.papyrus",
+        "compile_bundle"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "silent",
+        "clear": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "shell",
+      "label": "Open bundle",
+      "command": "papyrus.sh",
+      "args": [
+        "${config:papyrus.conf}.papyrus",
+        "open_bundle"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "silent",
+        "clear": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -110,6 +110,8 @@
         }
       );
 
+      templates = import ./templates;
+
       formatter = forAllSystems ({ pkgs }: pkgs.nixfmt-rfc-style);
 
       devShells = forAllSystems (

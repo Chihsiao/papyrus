@@ -1,9 +1,13 @@
 {
-  "papyrus.conf": "dev",
+  "papyrus.conf": "demo",
   "triggerTaskOnSave.on": true,
   "triggerTaskOnSave.selectedTask": "Compile bundle",
   "triggerTaskOnSave.tasks": {
-    "build": ["src/**/*", "*.papyrus"]
+    "build": [
+      "demo.papyrus",
+      "demo/!.output/",
+      "demo/**/*",
+    ],
   },
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nixd",
