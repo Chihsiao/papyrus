@@ -84,7 +84,7 @@
                 wrapProgram \
                   "$out/bin/papyrus.sh" \
                   --prefix PATH : "${binPath}" \
-                  --prefix PAPYRUS_MODULES : "$out/share/papyrus/modules"
+                  --suffix PAPYRUS_MODULES : "$out/share/papyrus/modules"
 
                 runHook postInstall
               '';
