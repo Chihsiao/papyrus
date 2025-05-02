@@ -155,7 +155,7 @@ init
 
 #region operations
 function preprocess() {
-    "${YPP:-ypp}" -o "$preprocessed_md_file" \
+    "${YPP:-ypp}" -p / -o "$preprocessed_md_file" \
         "${PAPYRUS_YPP_FLAGS[@]}" -- \
         "$index_md_file"
 }
