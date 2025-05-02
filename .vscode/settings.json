@@ -1,17 +1,10 @@
 {
-  "papyrus.conf": "main",
+  "papyrus.conf": "dev",
   "triggerTaskOnSave.on": true,
   "triggerTaskOnSave.selectedTask": "Compile bundle",
   "triggerTaskOnSave.tasks": {
     "build": ["src/**/*", "*.papyrus"]
   },
-  "files.exclude": {
-    "lib": true,
-    ".git": true,
-    ".vscode": true,
-    ".gitignore": true,
-    "shell.nix": true,
-    "start.sh": true,
-    "nix": true
-  }
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nixd",
 }

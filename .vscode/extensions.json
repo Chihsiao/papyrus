@@ -1,6 +1,6 @@
 {
   "recommendations": [
     "gruntfuggly.triggertaskonsave",
-    "amodio.toggle-excluded-files"
+    "jnoortheen.nix-ide",
   ]
 }
