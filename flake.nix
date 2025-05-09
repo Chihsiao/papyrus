@@ -32,7 +32,7 @@
               sources = {
                 "x86_64-linux" = pkgs.fetchzip {
                   url = "${baseUrl}/ypp-${version}-linux-x86_64.tar.gz";
-                  hash = "sha256-HCPGmfcKpyqcE5B1ExrQkcX7J1S+eNKwy23XnuYOr/0=";
+                  hash = "sha256-ZlVFqb5Xr4EuTwd76/CMkdk/SBAQWngIvytyI51zBKM=";
                 };
               };
             in
@@ -48,7 +48,7 @@
               dontBuild = true;
               installPhase = ''
                 runHook preInstall
-                install -D -- */bin/ypp "$out/bin/ypp"
+                install -D -- bin/ypp "$out/bin/ypp"
                 runHook postInstall
               '';
             };
@@ -66,8 +66,8 @@
               let
                 binPath = pkgs.lib.makeBinPath (
                   (with pkgs; [
-                    pandoc_3_6
                     coreutils
+                    pandoc
                   ])
                   ++ [
                     ypp
