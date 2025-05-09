@@ -24,8 +24,13 @@ asset_resolvers = {}
 ---@return string
 function resolve(descriptor)
     ---@type string, string, string
-    local title, src, attrs = descriptor:match('^%[(.-)%]%((.-)%)(.-)$')
+    local image_flag, title, src, attrs = descriptor:match('^(!?)%[(.-)%]%((.-)%)(.-)$')
     assert(attrs:len() == 0 or attrs:sub(1, 1) == '{' and attrs:sub(-1, -1) == '}')
+
+    if image_flag == '!' then
+---@diagnostic disable-next-line: undefined-global
+        return '!['..title..']('..ypp.find_file(src)..')'..attrs
+    end
 
     ---@type string
     local filename = fs.basename(src)
