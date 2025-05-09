@@ -11,5 +11,5 @@ md_figure_resolvers['mermaid'] =
 
 ---@diagnostic disable-next-line: undefined-global
         local output_file = image.mmdc(opts)(content)
-        return '!['..title..']('..output_file..')'..attrs
+        return resolve('!['..title..']('..output_file..')'..attrs)
     end

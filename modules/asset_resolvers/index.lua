@@ -27,11 +27,6 @@ function resolve(descriptor)
     local image_flag, title, src, attrs = descriptor:match('^(!?)%[(.-)%]%((.-)%)(.-)$')
     assert(attrs:len() == 0 or attrs:sub(1, 1) == '{' and attrs:sub(-1, -1) == '}')
 
-    if image_flag == '!' then
----@diagnostic disable-next-line: undefined-global
-        return '!['..title..']('..ypp.find_file(src)..')'..attrs
-    end
-
     ---@type string
     local filename = fs.basename(src)
     local resolver = nil
@@ -43,7 +38,13 @@ function resolve(descriptor)
         end
     end
 
-    assert(resolver ~= nil)
+    if resolver == nil then
+        if image_flag == '!' then
+---@diagnostic disable-next-line: undefined-global
+            return '!['..title..']('..ypp.find_file(src)..')'..attrs
+        end
+        error('Failed to resolve '..src)
+    end
 
 ---@diagnostic disable-next-line: undefined-global
     local file_content = ypp.read_file(ypp.find_file(src))
