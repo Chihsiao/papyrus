@@ -106,9 +106,14 @@ function run_mmdc() {
 }
 
 function run_mmdc_with_trim() {
-    if [[ "${opt_format,,}" =~ ^(svg|pdf)$ ]]; then
-        # skip trimming for svg and pdf format
+    if [[ "${opt_format,,}" = svg ]]; then
         "${run_mmdc_for_trim:-run_mmdc}" "$@"
+        return
+    fi
+
+    if [[ "${opt_format,,}" = pdf ]]; then
+        opt_output=- "${run_mmdc_for_trim:-run_mmdc}" "$@" \
+            | "${PDFCROP:-pdfcrop}" -- - "$opt_output"
         return
     fi
 
