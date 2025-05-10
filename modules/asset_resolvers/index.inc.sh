@@ -5,4 +5,5 @@ PAPYRUS_YPP_FLAGS+=(
     -l "$__MODULE_ROOT__/index.lua"
     -l "$__MODULE_ROOT__/resolvers/md_figures.lua"
     -l "$__MODULE_ROOT__/resolvers/md_figures/mermaid.lua"
+    -l "$__MODULE_ROOT__/resolvers/tex_figure.lua"
 )
