@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "gruntfuggly.triggertaskonsave",
+    "James-Yu.latex-workshop",
     "jnoortheen.nix-ide",
   ]
 }

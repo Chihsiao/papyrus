@@ -9,7 +9,6 @@ if ($input =~ /\.tex$/) {
 
 if ($input =~ /\.fig$/) {
     my $WORKSPACE_FOLDER = $ENV{'PAPYRUS_WORKSPACE_FOLDER'};
-    $out_dir = "$WORKSPACE_FOLDER/demo/.output/demo/tex" if $WORKSPACE_FOLDER;
     my ($basename, $dir, $ext) = fileparse($input, qr/\.fig$/);
-    $jobname = "fig-$basename";
+    $aux_dir = "$WORKSPACE_FOLDER/demo/.output/demo/aux/fig-$basename" if $WORKSPACE_FOLDER;
 }
