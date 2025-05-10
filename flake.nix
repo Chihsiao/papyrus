@@ -130,9 +130,18 @@
                 pkgs.haskellPackages.pandoc-crossref
                 pkgs.imagemagickBig
                 pkgs.mermaid-cli
+                pkgs.inkscape
+              ]
+              ++ [
+                (pkgs.texliveFull.withPackages (
+                  ps: with ps; [
+                    standalone
+                  ]
+                ))
               ];
 
             shellHook = ''
+              export -- PAPYRUS_WORKSPACE_FOLDER="$PWD"
               export -- PAPYRUS_MODULES="$PWD/modules''\${PAPYRUS_MODULES:+:''\${PAPYRUS_MODULES:-}}"
             '';
           };

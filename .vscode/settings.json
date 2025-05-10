@@ -5,6 +5,7 @@
   "triggerTaskOnSave.tasks": {
     "build": [
       "demo.papyrus",
+      "!demo/**/*.fig.tex",
       "demo/!.output/",
       "demo/**/*",
     ],
