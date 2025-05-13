@@ -239,7 +239,7 @@ end
 local function use_custom_style(style, para)
     return '::: {custom-style="'..style..'"}\n'..
 ---@diagnostic disable-next-line: undefined-global
-           '| '..ypp(para)..'\n'..
+            ypp(para)..'\n'..
            ':::'
 end
 
