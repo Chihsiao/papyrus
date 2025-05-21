@@ -10,6 +10,8 @@ set -euo pipefail \
 }
 "}"
 
+: "${MMDC:=$(PATH="$MMDC_SEARCH_PATH" which mmdc)}"
+
 #region functions
 function get_ext_of() {
     [[ "$1" != *.* ]] || printf '%s\n' "${1##*.}"
@@ -94,7 +96,7 @@ function parse_arguments() {
 }
 
 function run_mmdc() {
-    PATH="$MMDC_SEARCH_PATH" command mmdc \
+    ${MMDC} ${MMDC_FLAGS:-} \
         ${MMDC_CSS:+--cssFile=<(printf '%s\n' "$MMDC_CSS")} \
         ${MMDC_CONFIG:+--configFile=<(printf '%s\n' "$MMDC_CONFIG")} "$@" \
         ${opt_height_def:+--height="$opt_height"} ${opt_width_def:+--width="$opt_width"} \
