@@ -88,7 +88,12 @@ function import_module() {
           __FILE__
 
     local modules_dirs modules_dir
-    IFS=: read -ra modules_dirs <<< "$PAPYRUS_MODULES"
+    readarray -td':' modules_dirs < <(printf '%s' "$PAPYRUS_MODULES")
+    readarray -td':' -O "${#modules_dirs[@]}" modules_dirs < <(
+        sed -E 's@(:|$)@/papyrus/modules\1@g' < <(
+            printf '%s' "${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+        )
+    )
 
     for __MODULE_NAME__ in "$@"
     do
