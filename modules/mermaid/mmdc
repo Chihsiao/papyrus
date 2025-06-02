@@ -46,8 +46,8 @@ function use_default() {
         # || $def_val is empty and emptiable
         [[ -n "$def_val" || -n "${def_val_emptiable-1}" ]] || continue
 
-        export -- "$var_def=$def_val"
-        export -- "$var=$def_val"
+        declare -g -- "$var_def=$def_val"
+        declare -g -- "$var=$def_val"
     done
 }
 

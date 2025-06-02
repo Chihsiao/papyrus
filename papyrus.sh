@@ -31,8 +31,8 @@ function use_default() {
         # || $def_val is empty and emptiable
         [[ -n "$def_val" || -n "${def_val_emptiable-1}" ]] || continue
 
-        export -- "$var_def=$def_val"
-        export -- "$var=$def_val"
+        declare -g -- "$var_def=$def_val"
+        declare -g -- "$var=$def_val"
     done
 }
 
@@ -82,6 +82,8 @@ PAPYRUS_POSTPROCESSORS=()
 #region modules
 use_default PAPYRUS_MODULES:=modules
 
+declare -A -- __IMPORTED_MODULES__=()
+
 function import_module() {
     local __MODULE_NAME__ \
           __MODULE_ROOT__ \
@@ -97,9 +99,8 @@ function import_module() {
 
     for __MODULE_NAME__ in "$@"
     do
-        local k="__MODULE_IMPORTED_${__MODULE_NAME__}__"
-        # assert module is not imported
-        [[ ! -v "$k" ]] || continue
+        declare -n -- is_imported="__IMPORTED_MODULES__[$__MODULE_NAME__]"
+        [[ -z "${is_imported:-}" ]] || continue
 
         for modules_dir in "${modules_dirs[@]}"; do
             __MODULE_ROOT__="$modules_dir/$__MODULE_NAME__"
@@ -108,7 +109,7 @@ function import_module() {
             then
                 # shellcheck source=/dev/null
                 source "$__FILE__"
-                export -- "$k"=1
+                is_imported=1
                 continue 2
             fi
 
@@ -116,7 +117,7 @@ function import_module() {
             if [ -f "$__FILE__" ]
             then
                 PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
-                export -- "$k"=1
+                is_imported=1
                 continue 2
             fi
 
@@ -124,7 +125,7 @@ function import_module() {
             if [ -f "$__FILE__" ]
             then
                 PAPYRUS_YPP_FLAGS+=(-l "$__FILE__")
-                export -- "$k"=1
+                is_imported=1
                 continue 2
             fi
         done

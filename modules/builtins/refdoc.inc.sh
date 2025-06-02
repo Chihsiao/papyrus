@@ -21,5 +21,5 @@ function use_refdoc() {
         eval set -- ref
     fi
 
-    export REFDOC_BASENAME="$1"
+    declare -g -- REFDOC_BASENAME="$1"
 }
